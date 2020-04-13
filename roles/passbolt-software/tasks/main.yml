@@ -1,0 +1,35 @@
+- name: MariaDB
+  apt:
+    pkg:
+      - mariadb-server
+- name: Pass Bolt Folder
+  file:
+     path: /usr/src/passbolt
+     state: directory
+     mode: '0755'
+- name: Pass Bolt Source
+  unarchive:
+    src: https://www.passbolt.com/ce/download/installers/debian/latest
+    dest: /usr/src/passbolt
+    remote_src: yes
+
+#- name: Install PAss Bolt
+#  expect:
+#    command: /usr/src/passbolt/passbolt_ce_debian_installer.sh
+#    responses:
+#       (?i)"Do you want to install a local mariadb server on this machine?": 1
+#       (?i)"MariaDB Root Password:": test1234
+- name: Install PAss Bolt
+  command: /usr/src/passbolt/passbolt_ce_debian_installer.sh
+  args:
+    stdin: |
+       1
+       test1234
+       test1234
+       passbolt_user
+       test1234
+       test1234
+       passbolt_db
+       1
+       pass.hypha.coop
+       3
